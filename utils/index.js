@@ -12,5 +12,18 @@ async function get_package_info(pack_id, request_cache) {
     }
     return request_cache.value.package_info[pack_id]
 }
-
-export { get_package_info }
+async function inbound(pack_id, num, method) {
+    const res = await uni.request({
+        url: global.url + '/update',
+        method: 'POST',
+        data: {
+            method: (()=>method==='入库'?'inbound':'outbound')(),
+            pack_id: pack_id,
+            params: {
+                num: num
+            }
+        }
+    })
+    return res.data
+}
+export { get_package_info, inbound }

@@ -8,8 +8,8 @@
         <input_id @submit="(id_) => prop.id = id_"/>
       </div>
       <div v-if="prop.operation !== '' && prop.id !== ''">
-        <div v-if="prop.operation === '入库'">
-          <inbound :id="prop.id"/>
+        <div v-if="(prop.operation === '入库')||(prop.operation === '出库')">
+          <bound :id="prop.id" :operation="prop.operation"/>
         </div>
       </div>
     </div>
@@ -27,22 +27,21 @@ import Input_id from '../views/input_id.vue'
 import {use_store} from '/store'
 import {storeToRefs} from 'pinia'
 import Create_pack from '../views/create_pack.vue'
-import Inbound from '../views/inbound.vue'
+import Bound from '../views/bound.vue'
 const store = use_store()
 const {request_cache} = storeToRefs(store)
 const props = defineProps(['id', 'operation'])
 const prop = ref(JSON.parse(JSON.stringify(props)))
-const pack_info = ref({})
 const is_loading = ref(false)
 const is_new = ref(false)
 watch(
     () => prop.value.id, async (new_id) => {
       if (!!new_id) {
-        uni.showLoading({title: '加载中...', mask: true});
+        uni.showLoading({title: '加载中...', mask: true})
         is_loading.value = true
-        pack_info.value = await get_package_info(new_id.toString(), request_cache)
+        await get_package_info(new_id.toString(), request_cache)
         is_loading.value = false
-        is_new.value = !pack_info.value
+        is_new.value = !request_cache.value.package_info[prop.value.id]
         uni.hideLoading()
         if(is_new.value) {
           uni.showToast({
