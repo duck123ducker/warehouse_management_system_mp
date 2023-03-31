@@ -22,7 +22,8 @@
 <script setup>
 import {ref, computed} from 'vue'
 const emit = defineEmits(['submit'])
-const input_content = ref('')
+const props = defineProps(['id'])
+const input_content = ref(props.id)
 const is_checked = computed(()=>{return input_content.value.length <= 20 &&/^[a-zA-Z0-9_]+$/.test(input_content.value)})
 function onKeyInput(event) {
   input_content.value = event.target.value.trim()

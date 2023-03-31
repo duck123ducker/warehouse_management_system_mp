@@ -52,14 +52,14 @@ function scan_code(){
     onlyFromCamera: true,
     success: function (res) {
       uni.navigateTo({
-        url: '/pages/modify/modify?id=' + res.result
+        url: '/pages/choose_op/choose_op?id=' + res.result
       });
     }
   });
 }
 function go_page(name) {
   uni.navigateTo({
-    url: '/pages/modify/modify?operation=' + name
+    url: `/pages/get_id/get_id?operation=${name}`
   });
 }
 </script>

@@ -1,16 +1,14 @@
 import {global} from './global'
 
 async function get_package_info(pack_id, request_cache) {
-    if (!request_cache.value.package_info.hasOwnProperty(pack_id)) {
-        const res = await uni.request({
-            url: global.url + '/pack',
-            data: {
-                package_id: pack_id
-            }
-        })
-        request_cache.value.package_info[pack_id] = res.data
-    }
-    return request_cache.value.package_info[pack_id]
+    const res = await uni.request({
+        url: global.url + '/pack',
+        data: {
+            package_id: pack_id
+        }
+    })
+    request_cache.value.package_info[pack_id] = res.data
+    return res.data
 }
 async function inbound(pack_id, num, method) {
     const res = await uni.request({
@@ -26,4 +24,12 @@ async function inbound(pack_id, num, method) {
     })
     return res.data
 }
-export { get_package_info, inbound }
+async function create(info) {
+    const res = await uni.request({
+        url: global.url + '/create',
+        method: 'POST',
+        data: info
+    })
+    return res.data
+}
+export { get_package_info, inbound, create }

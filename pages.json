@@ -7,7 +7,19 @@
 			}
 		},
 		{
-			"path": "pages/modify/modify",
+			"path": "pages/choose_op/choose_op",
+			"style": {
+				"navigationBarTitleText": "操作包裹"
+			}
+		},
+		{
+			"path": "pages/detail_op/detail_op",
+			"style": {
+				"navigationBarTitleText": "操作包裹"
+			}
+		},
+		{
+			"path": "pages/get_id/get_id",
 			"style": {
 				"navigationBarTitleText": "操作包裹"
 			}
