@@ -32,4 +32,12 @@ async function create(info) {
     })
     return res.data
 }
-export { get_package_info, inbound, create }
+async function modify(info) {
+    const res = await uni.request({
+        url: global.url + '/modify',
+        method: 'POST',
+        data: info
+    })
+    return res.data
+}
+export { get_package_info, inbound, create, modify }

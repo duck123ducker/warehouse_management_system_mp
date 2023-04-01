@@ -16,13 +16,12 @@
 <script setup>
 import {use_store} from '/store'
 import {storeToRefs} from 'pinia'
-import {get_package_info, inbound} from '../../utils'
+import {inbound} from '../../utils'
 import {ref} from 'vue'
 const store = use_store()
 const {request_cache} = storeToRefs(store)
 const props = defineProps(['id', 'operation'])
 const input_num = ref(1)
-get_package_info(props.id.toString(), request_cache)
 function changeValue(num_) {
   input_num.value = num_
 }

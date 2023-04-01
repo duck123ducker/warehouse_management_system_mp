@@ -8,7 +8,7 @@
         <uni-easyinput type="text" v-model="formData.name" placeholder="请输入名称" />
       </uni-forms-item>
       <uni-forms-item required label="库存" name="num">
-        <uni-number-box @change="changeValue"/>
+        <uni-number-box v-model="formData.num" @change="changeValue"/>
       </uni-forms-item>
     </uni-forms>
     <div @click="submit" class="my-button">
@@ -21,16 +21,16 @@
 import {use_store} from '/store'
 import {storeToRefs} from 'pinia'
 import {ref} from 'vue'
-import {create} from '../../utils'
+import {create, modify} from '../../utils'
 const store = use_store()
 const {request_cache} = storeToRefs(store)
 const form = ref(null)
-const props = defineProps(['id'])
+const props = defineProps(['id', 'modify'])
 const emit = defineEmits(['submit'])
 const formData = ref({
   id: props.id,
-  name: '',
-  num: 1,
+  name: !!props.modify?request_cache.value.package_info[props.id].name:'',
+  num: !!props.modify?request_cache.value.package_info[props.id].num:1,
 })
 const customRules = ref({
   name: {
@@ -53,15 +53,24 @@ function changeValue(num_) {
 function submit() {
   form.value.validate().then(res => {
     uni.showLoading({title: '加载中...', mask: true})
-    console.log('表单数据信息：', res)
-    create(res).then(res_ => {
-      if(res_==='success') {
-        uni.hideLoading()
-        uni.showToast({title: '新建包裹成功！',icon: 'none'})
-        request_cache.value.package_info[props.id] = res
-        emit('submit')
-      }
-    })
+    if(!!props.modify) {
+      modify(res).then(res_ => {
+        if(res_==='success') {
+          uni.hideLoading()
+          uni.showToast({title: '修改信息成功！',icon: 'none'})
+          request_cache.value.package_info[props.id] = res
+        }
+      })
+    }else {
+      create(res).then(res_ => {
+        if(res_==='success') {
+          uni.hideLoading()
+          uni.showToast({title: '新建包裹成功！',icon: 'none'})
+          request_cache.value.package_info[props.id] = res
+          emit('submit')
+        }
+      })
+    }
   })
 }
 </script>
