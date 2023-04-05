@@ -7,6 +7,7 @@
       <choose_operation @choose="go_op_page"/>
     </div>
   </div>
+  <login/>
 </template>
 
 <script setup>
@@ -16,17 +17,18 @@ import {storeToRefs} from 'pinia'
 import {get_package_info} from '../../utils'
 import Create_pack from '../views/create_pack.vue'
 import Choose_operation from '../views/choose_operation.vue'
+import Login from '../views/login.vue'
 const props = defineProps(['id'])
+const is_loading = ref(true)
 const store = use_store()
 const {request_cache} = storeToRefs(store)
-const is_loading = ref(true)
 uni.showLoading({title: '加载中...', mask: true})
-get_package_info(props.id.toString(), request_cache).then(()=>{
+get_package_info(props.id.toString(), request_cache).then((res_)=>{
   is_loading.value = false
   uni.hideLoading()
-  if(!request_cache.value.package_info[props.id]) {
+  if(!res_) {
     uni.showToast({title: '未查询到该包裹，请完善信息！',icon: 'none',duration: 2000,mask: false,})
-  }
+  }else if(res_ === 'expired') uni.navigateBack()
 })
 function go_op_page(res) {
   uni.navigateTo({

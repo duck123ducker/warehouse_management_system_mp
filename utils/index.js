@@ -1,43 +1,31 @@
-import {global} from './global'
+import request from './request'
+import md5 from 'js-md5'
 
-async function get_package_info(pack_id, request_cache) {
-    const res = await uni.request({
-        url: global.url + '/pack',
-        data: {
-            package_id: pack_id
+function get_package_info(pack_id, request_cache) {
+    return request.get('/pack', {package_id: pack_id}).then((res) => {
+        request_cache.value.package_info[pack_id] = res.data;
+        return res.data;
+    })
+}
+function inbound(pack_id, num, method) {
+    return request.post('/update', {
+        method: (() => method === '入库' ? 'inbound' : 'outbound')(),
+        pack_id: pack_id,
+        params: {
+            num: num
         }
-    })
-    request_cache.value.package_info[pack_id] = res.data
-    return res.data
+    }).then(res => res.data)
 }
-async function inbound(pack_id, num, method) {
-    const res = await uni.request({
-        url: global.url + '/update',
-        method: 'POST',
-        data: {
-            method: (()=>method==='入库'?'inbound':'outbound')(),
-            pack_id: pack_id,
-            params: {
-                num: num
-            }
-        }
-    })
-    return res.data
+function create(info) {
+    return request.post('/create', info).then(res => res.data)
 }
-async function create(info) {
-    const res = await uni.request({
-        url: global.url + '/create',
-        method: 'POST',
-        data: info
-    })
-    return res.data
+function modify(info) {
+    return request.post('/modify', info).then(res => res.data)
 }
-async function modify(info) {
-    const res = await uni.request({
-        url: global.url + '/modify',
-        method: 'POST',
-        data: info
-    })
-    return res.data
+
+function login(info) {
+    const info_ = JSON.parse(JSON.stringify(info))
+    info_.passwd = md5(info_.passwd + 'duckDucker')
+    return request.post('/login', info_).then(res => res.data)
 }
-export { get_package_info, inbound, create, modify }
+export { get_package_info, inbound, create, modify, login }

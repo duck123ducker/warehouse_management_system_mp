@@ -19,4 +19,12 @@
       display: flex;
       align-items: center;
     }
+    .login-container {
+      .uni-forms-item__content {
+        width: 400rpx;
+      }
+      .uni-forms-item__label {
+        width: fit-content!important;
+      }
+    }
 </style>
