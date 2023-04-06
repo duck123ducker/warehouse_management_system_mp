@@ -6,5 +6,6 @@ export const use_store = defineStore('store', () => {
 	const request_cache = ref({
 		package_info: {}
 	})
-    return { token, request_cache }
+	const user_info = ref(null)
+    return { token, request_cache, user_info }
 })

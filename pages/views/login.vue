@@ -57,6 +57,7 @@ function login_submit() {
         store.token = res_.data.token
         user.value = {id: '', passwd: ''}
       }
+      uni.hideLoading()
       uni.showToast({title: res_.message ,icon: 'none',})
     })
   }).catch(err => console.log(err))

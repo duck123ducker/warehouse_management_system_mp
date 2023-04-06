@@ -26,11 +26,10 @@ function go_op_page(res) {
   uni.showLoading({title: '加载中...', mask: true})
   get_package_info(res.toString(), request_cache).then((res_)=>{
     uni.hideLoading()
-    console.log(res_)
     if(!res_) {
       need_info.value = true
       uni.showToast({title: '未查询到该包裹，请完善信息！',icon: 'none',duration: 2000,mask: false,})
-    }else if(res_ === 'expired'){
+    }else if(res_ === 'expired' || res_ === 'no permission'){
     }else {
       uni.navigateTo({
         url: `/pages/detail_op/detail_op?id=${res}&operation=${props.operation}`

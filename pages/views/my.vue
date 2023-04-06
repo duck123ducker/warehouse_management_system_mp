@@ -1,5 +1,5 @@
 <template>
-  <div style="margin: 10rpx 20rpx 0">
+  <div v-if="!!user_info" style="margin: 10rpx 20rpx 0">
     <div class="name">
       {{user_info.nick_name}}
     </div>
@@ -17,11 +17,11 @@
 
 <script setup>
 import request from '../../utils/request'
-import { ref } from 'vue'
+import {storeToRefs} from 'pinia'
 import {use_store} from '../../store'
 
 const emit = defineEmits(['logout'])
-const user_info = ref('')
+const {user_info} = storeToRefs(use_store())
 request.get('/my_user_info').then(res => user_info.value = res.data)
 function logout() {
   const store = use_store()
