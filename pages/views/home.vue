@@ -58,8 +58,7 @@ function scan_code(){
     success: function (res) {
       get_package_info(res.result.toString(), request_cache).then((res_)=>{
         uni.hideLoading()
-        if(!res_) uni.showToast({title: '未查询到该包裹，请完善信息！',icon: 'none',duration: 2000,mask: false,})
-        else if(!(res_ === 'expired' || res_ === 'no permission')) uni.navigateTo({url: '/pages/choose_op/choose_op?id=' + res.result + '&pack_info=' + JSON.stringify(res_)})
+        if(!(res_ === 'expired' || res_ === 'no permission')) uni.navigateTo({url: '/pages/choose_op/choose_op?id=' + res.result})
       })
     }
   });

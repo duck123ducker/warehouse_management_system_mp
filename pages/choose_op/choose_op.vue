@@ -14,7 +14,7 @@ import {storeToRefs} from 'pinia'
 import Create_pack from '../views/create_pack.vue'
 import Choose_operation from '../views/choose_operation.vue'
 import Login from '../views/login.vue'
-const props = defineProps(['id', 'pack_info'])
+const props = defineProps(['id'])
 const store = use_store()
 const {request_cache} = storeToRefs(store)
 function go_op_page(res) {

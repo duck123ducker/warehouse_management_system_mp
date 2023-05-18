@@ -22,6 +22,7 @@ import {use_store} from '/store'
 import {storeToRefs} from 'pinia'
 import {ref} from 'vue'
 import {create, modify} from '../../utils'
+uni.showToast({title: '未查询到该包裹，请完善信息！',icon: 'none',duration: 2000,mask: false,})
 const store = use_store()
 const {request_cache} = storeToRefs(store)
 const form = ref(null)
